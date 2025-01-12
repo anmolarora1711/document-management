@@ -2,9 +2,12 @@ import {
     Entity,
     PrimaryGeneratedColumn,
     Column,
+    ManyToOne,
     BeforeInsert,
+    JoinColumn,
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
+import { Role } from './role.entity';
 
 @Entity('users')
 export class User {
@@ -17,8 +20,9 @@ export class User {
     @Column()
     password: string;
 
-    @Column()
-    role: string;
+    @ManyToOne(() => Role, (role) => role.users, { eager: true })
+    @JoinColumn({ name: 'role_id' })
+    role: Role;
 
     @BeforeInsert()
     async hashPassword() {
