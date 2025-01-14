@@ -43,6 +43,8 @@ export class AuthService {
         user.password = password;
         user.role = roleFound;
 
-        return await this.userRepository.save(user);
+        const savedUser = await this.userRepository.save(user);
+        delete savedUser.password;
+        return savedUser;
     }
 }
