@@ -19,5 +19,10 @@ export default () => {
             expiresIn: process.env.JWT_EXPIRES_IN,
         },
         nodeEnv: process.env.NODE_ENV,
+        redis: {
+            host: process.env.REDIS_HOST,
+            port: process.env.REDIS_PORT,
+            password: process.env.REDIS_PASSWORD,
+        }
     });
 }

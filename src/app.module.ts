@@ -5,6 +5,7 @@ import { AppConfigModule } from './config/config.module';
 import { DatabaseModule } from './database/database.module';
 import { AuthModule } from './auth/auth.module';
 import { RoleModule } from './role/role.module';
+import { CustomRedisModule } from './redis/redis.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { RoleModule } from './role/role.module';
     DatabaseModule,
     AuthModule,
     RoleModule,
+    CustomRedisModule
   ],
   controllers: [AppController],
   providers: [AppService],

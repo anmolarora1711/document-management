@@ -6,9 +6,11 @@ import { UserRepository } from 'src/database/repositories/user.repository';
 import { JwtStrategy } from './jwt.strategy';
 import { ConfigService } from '@nestjs/config';
 import { RoleRepository } from 'src/database/repositories/role.repository';
+import { CustomRedisModule } from '../redis/redis.module';
 
 @Module({
     imports: [
+        CustomRedisModule,
         JwtModule.registerAsync({
             inject: [ConfigService],
             useFactory: (configService: ConfigService) => ({

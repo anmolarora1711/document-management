@@ -3,6 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { UserRepository } from 'src/database/repositories/user.repository';
 import { RoleRepository } from 'src/database/repositories/role.repository';
 import { User } from '../database/entities/user.entity';
+import { RedisService } from 'src/redis/redis.service';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
@@ -10,7 +11,8 @@ export class AuthService {
     constructor(
         private userRepository: UserRepository,
         private roleRepository: RoleRepository,
-        private jwtService: JwtService,
+        private readonly jwtService: JwtService,
+        private readonly redisService: RedisService,
     ) {}
 
     async validateUser(username: string, password: string): Promise<any> {
@@ -47,4 +49,16 @@ export class AuthService {
         delete savedUser.password;
         return savedUser;
     }
+
+  async logout(token: string): Promise<void> {
+    const decoded = this.jwtService.decode(token) as { exp: number };
+    if (!decoded || !decoded.exp) {
+      throw new Error('Invalid token');
+    }
+
+    const expiresIn = decoded.exp * 1000 - Date.now();  // Calculate remaining time in milliseconds
+    if (expiresIn > 0) {
+      await this.redisService.addToBlacklist(token, Math.floor(expiresIn / 1000));
+    }
+  }
 }
