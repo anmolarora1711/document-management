@@ -1,9 +1,9 @@
 import { BadRequestException, ConflictException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UserRepository } from 'src/database/repositories/user.repository';
-import { RoleRepository } from 'src/database/repositories/role.repository';
+import { UserRepository } from '../database/repositories/user.repository';
+import { RoleRepository } from '../database/repositories/role.repository';
 import { User } from '../database/entities/user.entity';
-import { RedisService } from 'src/redis/redis.service';
+import { RedisService } from '../redis/redis.service';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
@@ -31,21 +31,21 @@ export class AuthService {
         };
     }
 
-    async register(username: string, password: string, role: string): Promise<User> {
-        const existingUser = await this.userRepository.findByUsername(username);
+    async register(user: any): Promise<User> {
+        const existingUser = await this.userRepository.findByUsername(user.username);
         if (existingUser) {
             throw new ConflictException('Username already exists');
         }
-        const roleFound = await this.roleRepository.findByName(role);
+        const roleFound = await this.roleRepository.findByName(user.role);
         if (!roleFound) {
-            throw new BadRequestException(`Role "${role}" does not exist`);
+            throw new BadRequestException(`Role ${user.role} does not exist`);
         }
-        const user = new User();
-        user.username = username;
-        user.password = password;
-        user.role = roleFound;
+        const newUser = new User();
+        newUser.username = user.username;
+        newUser.password = user.password;
+        newUser.role = roleFound;
 
-        const savedUser = await this.userRepository.save(user);
+        const savedUser = await this.userRepository.save(newUser);
         delete savedUser.password;
         return savedUser;
     }

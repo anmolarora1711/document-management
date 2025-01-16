@@ -2,7 +2,7 @@ import {
     Entity,
     PrimaryGeneratedColumn,
     Column,
-    ManyToMany,
+    OneToMany,
 } from 'typeorm';
 import { User } from './user.entity';
 
@@ -14,6 +14,6 @@ export class Role {
     @Column({ unique: true })
     name: string;
 
-    @ManyToMany(() => User, (user) => user.role)
-    users: User[];
+    @OneToMany(() => User, (user) => user.role)
+    users?: User[];
 }
