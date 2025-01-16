@@ -20,9 +20,10 @@ export class User {
     @Column()
     password: string;
 
-    @ManyToOne(() => Role, (role) => role.users, { eager: true })
-    @JoinColumn({ name: 'role_id' })
-    role: Role;
+    // This is the relationship with the Role entity (Many-to-One)
+    @ManyToOne(() => Role, (role) => role.users, { eager: true })  // eager: true will automatically load the role with the user
+    @JoinColumn({ name: 'role_id' })  // The foreign key in the User table
+    role: Role;  // A single role for each user
 
     @BeforeInsert()
     async hashPassword() {

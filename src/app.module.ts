@@ -6,6 +6,7 @@ import { DatabaseModule } from './database/database.module';
 import { AuthModule } from './auth/auth.module';
 import { RoleModule } from './role/role.module';
 import { CustomRedisModule } from './redis/redis.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -13,7 +14,8 @@ import { CustomRedisModule } from './redis/redis.module';
     DatabaseModule,
     AuthModule,
     RoleModule,
-    CustomRedisModule
+    CustomRedisModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
