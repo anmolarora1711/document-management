@@ -7,6 +7,7 @@ import { AuthModule } from './auth/auth.module';
 import { RoleModule } from './role/role.module';
 import { CustomRedisModule } from './redis/redis.module';
 import { UserModule } from './user/user.module';
+import { DocumentModule } from './document/document.module';
 
 @Module({
   imports: [
@@ -16,8 +17,9 @@ import { UserModule } from './user/user.module';
     RoleModule,
     CustomRedisModule,
     UserModule,
+    DocumentModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }
