@@ -1,4 +1,4 @@
-import { Controller, Post, Get, Body, HttpException } from '@nestjs/common';
+import { Controller, Post, Get, Body, HttpException, Query } from '@nestjs/common';
 import { IngestionService } from './ingestion.service';
 
 @Controller('ingestion')
@@ -12,4 +12,10 @@ export class IngestionController {
         }
         return this.ingestionService.triggerIngestionProcess(body.source);
     }
+
+    @Get('status')
+    async getIngestionStatus(@Query('processId') processId: string) {
+        return this.ingestionService.getIngestionStatus(processId);
+    }
+
 }
