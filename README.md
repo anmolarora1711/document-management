@@ -1,99 +1,137 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Document Management System
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+This project is a **Document Management System** built with **NestJS**, a progressive Node.js framework for building efficient, reliable, and scalable server-side applications. The system provides robust APIs for managing documents, including creating, uploading, downloading, updating metadata, listing, and deleting documents. It features **role-based access control (RBAC)** and utilizes **Redis for token management**.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+---
 
-## Description
+## Table of Contents
+- [Project Overview](#project-overview)
+- [Technologies Used](#technologies-used)
+- [Setup and Installation](#setup-and-installation)
+- [Running the Application](#running-the-application)
+- [Environment Variables](#environment-variables)
+- [Features](#features)
+- [Approach and Design](#approach-and-design)
+- [Unit Tests](#unit-tests)
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+---
 
-## Project setup
+## Project Overview
+The **Document Management System** provides the following core functionalities:
+- **Create and manage document metadata** (title, description, author)
+- **Upload and download documents** securely
+- **List and search documents by title**
+- **Update document metadata**
+- **Delete documents**
+- **Role-based access control** for different user roles (admin, editor, viewer)
+- **Token management using Redis** to blacklist JWT tokens for secure authentication
 
-```bash
-$ npm install
+---
+
+## Technologies Used
+- **NestJS** – Framework for building scalable server-side applications
+- **TypeORM** – ORM for database operations
+- **PostgreSQL** – Database for storing document metadata
+- **Multer** – Middleware for handling multipart file uploads
+- **Redis** – In-memory store for managing token blacklists
+- **Jest** – Testing framework for unit tests
+- **Docker** – For containerized deployment
+
+---
+
+## Setup and Installation
+### Prerequisites
+- Node.js (v16+)
+- npm or yarn
+- PostgreSQL
+- Redis
+- Docker (optional for containerization)
+
+---
+
+### Installation Steps
+1. Clone the repository:
+```
+git clone https://github.com/your-repository/document-management.git
+cd document-management
+```
+2. Install dependencies:
+```
+npm install
+```
+3. Set up environment variables: Create a .env.development file in the root directory and configure it with your settings (refer to the Environment Variables section).
+4. Run PostgreSQL and Redis locally or using Docker.
+
+---
+
+## Running the Application
+### Start the Application
+```
+npm run start:dev
+```
+### Run Unit Tests
+```
+npm run test
+```
+## Commands for running the Application on Docker
+```
+docker-compose --env-file .env.development build
+docker-compose --env-file .env.development up
 ```
 
-## Compile and run the project
+---
 
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+## Environment Variables
+Create a **.env.development** file in the project root with the following variables:
+```
+NODE_ENV=development
+DB_HOST=localhost
+DB_PORT=5432
+DB_USER=postgres
+DB_PASSWORD=password
+DB_NAME=document_management
+JWT_SECRET=defaultSecret
+JWT_EXPIRES_IN=1h
+REDIS_HOST=redis-host-string
+REDIS_PORT=6379
+REDIS_PASSWORD=redis-password
 ```
 
-## Run tests
+---
 
-```bash
-# unit tests
-$ npm run test
+## Features
+- **Role-based Access Control** using custom Roles decorator and RolesGuard.
+- **JWT Authentication** with JwtAuthGuard.
+- **Token Blacklisting** in Redis for enhanced security.
+- **File Upload and Download** with Multer and StreamableFile.
+- **CRUD Operations** for managing documents.
 
-# e2e tests
-$ npm run test:e2e
+--
 
-# test coverage
-$ npm run test:cov
+## Approach and Design
+### Key Design Choices
+- **Modular Structure:** Each feature is encapsulated in its own module, following the NestJS modular architecture.
+- **Dependency Injection:** Used extensively for services, repositories, and guards to promote testability.
+- **Custom Decorators and Guards:** Implemented Roles decorator for role-based authorization and JwtAuthGuard for token validation.
+- **Redis for Token Management:** JWT tokens are blacklisted using Redis to prevent reuse after logout.
+
+### Code Organization
+- **src/auth** - Manages authentication-related APIs.
+- **src/common/decorators** – Contains custom decorators (Roles).
+- **src/common/guards** – Implements RolesGuard and JwtAuthGuard.
+- **src/common/guards/interfaces** - Contains interfaces for Guards.
+- **src/config** - Contains configurations.
+- **src/database** - Manages database.
+- **src/redis** – Provides RedisService for token management.
+- **src/document** – Manages document-related APIs.
+- **src/role** - Manages role-related APIs and services.
+- **src/user** - Manages user-related APIs.
+- **src/ingestion** - Manages ingestion-related APIs.
+
+---
+
+## Unit Tests
+**Command to Run Tests**
 ```
-
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g mau
-$ mau deploy
+npm run test
 ```
-
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
