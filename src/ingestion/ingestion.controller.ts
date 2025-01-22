@@ -1,7 +1,7 @@
 import { Controller, Post, Get, Body, HttpException, Query, UseGuards, Logger } from '@nestjs/common';
 import { IngestionService } from './ingestion.service';
 import { AuthGuard } from '@nestjs/passport';
-import { RolesGuard } from 'src/common/guards/roles.guard';
+import { RolesGuard } from '../common/guards/roles.guard';
 import { Roles } from '../common/decorators/roles.decorator';
 @Controller('ingestion')
 @UseGuards(AuthGuard('jwt'), RolesGuard)
